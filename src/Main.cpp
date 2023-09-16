@@ -1,4 +1,6 @@
 #include <iostream>
+#include <string>
+#include <vector>
 #include <fstream>
 #include <iomanip>
 #include <windows.h>
@@ -149,7 +151,57 @@ public:
 
 class Booking
 {
+public:
+    int ChooseHotel;
+    int Package;
+    int GoToMenu;
+    static float HotelPrice;
+
+    void Hotels()
+    {
+        vector<string> HotelName = {"Hotel Alpha", "Hotel Beta", "Hotel Gamma", "Hotel Delta", "Hotel Epsilon", "Hotel Zeta", "Hotel Eta", "Hotel Theta", "Hotel Iota", "Hotel Kappa"};
+        vector<float> HotelPrices = {1000, 1200, 1500, 1800, 2000, 2200, 2500, 2800, 3000, 3500};
+
+        cout << "Available Hotels:\n";
+        for (int i = 0; i < HotelName.size(); i++)
+        {
+            cout << i + 1 << ". " << HotelName[i] << " --> " << HotelPrices[i] << endl;
+        }
+
+        cout << "\nWe currently have " << HotelName.size() << " hotels you can choose from.\n"
+             << endl;
+        cin >> ChooseHotel;
+
+        system("cls");
+
+        if (ChooseHotel >= 1 && ChooseHotel <= HotelName.size())
+        {
+            ChooseHotel--; // Adjusting for 0-based indexing
+            cout << "You have selected " << HotelName[ChooseHotel] << " for your stay. The price of the hotel is " << HotelPrices[ChooseHotel] << endl;
+            cout << "Do you want to book this hotel? (Y/N)";
+            char Choice;
+            cin >> Choice;
+            if (Choice == 'Y' || Choice == 'y')
+            {
+                cout << "Your hotel is booked" << endl;
+                HotelPrice = HotelPrices[ChooseHotel];
+                cout << "Go to the menu to take the receipt" << endl;
+            }
+            else
+            {
+                cout << "Thank you for using our services" << endl;
+                Hotels();
+            }
+        }
+        else
+        {
+            cout << "Invalid choice. Please select a valid hotel." << endl;
+            Hotels();
+        }
+    }
 };
+
+float Booking::HotelPrice = 0.0;
 
 class Receipt
 {
