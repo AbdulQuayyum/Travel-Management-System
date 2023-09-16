@@ -63,6 +63,7 @@ class Vehicles
 public:
     int VehicleChoice;
     int Distance;
+    string BookedVehicle;
     static float TransportFee;
 
     float CalculateTransportFee(float rate)
@@ -83,12 +84,42 @@ public:
         if (Choice == 'Y' || Choice == 'y')
         {
             cout << "Your vehicle is booked" << endl;
+            BookedVehicle = GetVehicleName(VehicleChoice);
             cout << "Go to the main menu to get your reciept" << endl;
             Sleep(100);
         }
         else
         {
             cout << "Thank you for using our services" << endl;
+        }
+    }
+
+    string GetVehicleName(int choice)
+    {
+        switch (choice)
+        {
+        case 1:
+            return "Bus";
+        case 2:
+            return "Mahindra Scorpio";
+        case 3:
+            return "Honda Amaze";
+        case 4:
+            return "Hyundai Creta";
+        case 5:
+            return "Maruti Swift";
+        case 6:
+            return "Volkswagen Vento";
+        case 7:
+            return "Toyota Quantum";
+        case 8:
+            return "Rail Travel";
+        case 9:
+            return "Air Travel";
+        case 10:
+            return "Water Travel";
+        default:
+            return "Unknown";
         }
     }
 
@@ -155,6 +186,7 @@ public:
     int ChooseHotel;
     int Package;
     int GoToMenu;
+    string BookedHotel;
     static float HotelPrice;
 
     void Hotels()
@@ -185,6 +217,7 @@ public:
             {
                 cout << "Your hotel is booked" << endl;
                 HotelPrice = HotelPrices[ChooseHotel];
+                BookedHotel = HotelName[ChooseHotel];
                 cout << "Go to the menu to take the receipt" << endl;
             }
             else
@@ -203,8 +236,40 @@ public:
 
 float Booking::HotelPrice = 0.0;
 
-class Receipt
+class Receipt : public Booking, Vehicles, Customer
 {
+public:
+    void PrintBill()
+    {
+        ofstream outf("Receipt.txt");
+        {
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "----------------------------------Receipt----------------------------------" << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "Customer ID: " << CustomerID << endl
+                 << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "----------------------------------Booking----------------------------------" << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "Hotel Name: " << Booking::BookedHotel << endl;
+            outf << "Hotel Price: " << Booking::HotelPrice << endl
+                 << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "----------------------------------Vehicle----------------------------------" << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "Vehicle Name: " << Vehicles::BookedVehicle << endl;
+            outf << "Transport fee: " << Vehicles::TransportFee << endl
+                 << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "-----------------------------------Total-----------------------------------" << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "Total Price: " << Booking::HotelPrice + Vehicles::TransportFee << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+            outf << "---------------------------------Thank You---------------------------------" << endl;
+            outf << "---------------------------------------------------------------------------" << endl;
+        }
+        outf.close();
+    }
 };
 
 int main(){};
